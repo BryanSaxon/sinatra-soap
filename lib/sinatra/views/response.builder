@@ -5,7 +5,7 @@ xml.tag! 'soap:Envelope', 'xmlns:soap' => 'http://schemas.xmlsoap.org/soap/envel
     xml.tag! "soap:#{wsdl.action}Response" do
       params.each do |key, value| 
         xml.tag! key, value
-      end
+      end unless params.nil?
     end
   end
 end
