@@ -16,8 +16,8 @@ module Sinatra
         logger.info("buildXml called with value: ") { value }
         if value.kind_of?(Array) || value.kind_of?(Hash)
           logger.info("Value is Hash/Array")
-          xml.tag! key, nil do
-            value.each do |inner_key, inner_value|
+          value.each do |inner_key, inner_value|
+            xml.tag! key, nil do
               buildXml(xml, inner_key, inner_value)
             end
           end
