@@ -1,4 +1,5 @@
 require_relative 'param'
+require 'logger'
 
 module Sinatra
   module Soap
@@ -7,6 +8,28 @@ module Sinatra
       # Return the location where we can find our views
       def soap_views()
         File.join(File.dirname(__FILE__), "..", "views")
+      end
+
+      def buildXml(xml, key, value)
+        logger = Logger.new("#{Time.now.strftime("%d-%m-%Y")}-logfile.log")
+        logger.info("buildXml called with key: ") { key }
+        logger.info("buildXml called with value: ") { value }
+        if value.kind_of?(Array) || value.kind_of?(Hash)
+          logger.info("Value is Hash/Array")
+          xml.tag! key, nil do
+            value.each do |inner_key, inner_value|
+              buildXml(xml, inner_key, inner_value)
+            end
+          end
+        elsif key.kind_of?(Array) || key.kind_of?(Hash)
+          logger.info("key is Hash/Array")
+          key.each do |inner_key, inner_value|
+            buildXml(xml, inner_key, inner_value)
+          end
+        else
+          xml.tag! key, value
+        end
+        logger.close
       end
 
       def call_action_block
