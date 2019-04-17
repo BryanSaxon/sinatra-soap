@@ -1,4 +1,5 @@
 require_relative 'param'
+require 'logger'
 
 module Sinatra
   module Soap
@@ -7,6 +8,12 @@ module Sinatra
       # Return the location where we can find our views
       def soap_views()
         File.join(File.dirname(__FILE__), "..", "views")
+      end
+
+      def buildXml(params)
+        logger = Logger.new('logfile.log')
+        logger.info('Params') { params }
+        logger.close
       end
 
       def call_action_block
